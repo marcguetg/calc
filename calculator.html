@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="calculator.css"></link>
+
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.2/angular.js"></script>
+
+	<script defer src="mathjax-config.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+	<script defer src="config.js"></script>
+	<script defer src="calculator.js"></script>
+</head>
+
+<body ng-app="App" ng-controller="world">
+	<table>
+		<tr>
+			<td ng-repeat="name in load_names">
+				<button ng-click="load(name)">
+					{{name}}
+				</button>
+			</td>
+
+			<td>
+				<button ng-click="clear()">Clear</button>
+			</td>
+			<td>
+				<button ng-click="show_all = show_all ? false : true">{{show_all ? "hide" : "show"}}</button>
+			</td>
+		</tr>
+	</table>
+
+	<table>
+		<thead>
+			<tr>
+				<td>Name</td>
+				<td>Value</td>
+				<td>Unit</td>
+			</tr>
+		</thead>
+
+		<tbody ng-repeat="group in property_groups.store" ng-if="show_all || group.visible()">
+			<tr class="group">
+				<td colspan="3">{{group.name}}</td>
+			</tr>
+			<tr ng-repeat="property in group.store" ng-if="show_all || property.visible()">
+					<td>{{property.name}}</td>
+					<td>
+						<input
+							ng-model="property.show_value"
+							ng-keyup="update(property)"
+							ng-focus="property.focus()"
+							ng-blur="property.blur()"
+							type="number"/>
+					</td>
+					<td>{{property.show_unit}}</td>
+				</tr>
+			</tr>
+
+		</tbody>
+	</table>
+
+	<br>
+	<br>
+
+	<table>
+		<thead>
+			<tr>
+				<td>Name</td>
+				<td>Target</td>
+			</tr>
+		</thead>
+
+		<tbody ng-repeat="group in formula_groups.store"  ng-if="show_all || group.visible()">
+			<tr class="group">
+				<td colspan="2">
+					{{group.name}}
+					&nbsp;
+					<span mathjax-bind="group.formula"></span>
+				</td>
+			</tr>
+			<tr ng-repeat="name in group.names">
+				<td>{{name}}</td>
+				<td>
+					<input
+						type="radio"
+						ng-value="name"
+						ng-model="group.target"
+					/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>

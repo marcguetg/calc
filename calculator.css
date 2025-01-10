@@ -1,0 +1,30 @@
+select.formula {
+	float: right;
+	width: 10em;
+	margin-bottom: 20px;
+}
+
+span.name {
+	display: inline-block;
+	width: 19em;
+}
+
+
+select {
+	width: 100%;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+	/* float: left; */
+}
+
+
+td {
+	padding: 5px 15px;
+}
+
+tr.group {
+	background-color: Silver;
+}
