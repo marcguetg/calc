@@ -5,56 +5,75 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="stylesheet" href="calculator.css"></link>
+	<link rel="stylesheet" href="calculator.css">
+	</link>
 
-	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.2/angular.js"></script>
+	<!-- <script defer src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.2/angular.js"></script> -->
+	 <script defer src="angular.js"></script>
 
 	<script defer src="mathjax-config.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+	<!-- <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script> -->
 	<script defer src="config.js"></script>
+	<script defer src="unit_test.js"></script>
 	<script defer src="calculator.js"></script>
 </head>
 
 <body ng-app="App" ng-controller="world">
-	<table>
-		<tr>
-			<td ng-repeat="name in load_names">
-				<button ng-click="load(name)">
-					{{name}}
+	<!-- Navigation Bar -->
+	<div class="navbar">
+		<div class="dropdown" ng-repeat="preset in presets.list">
+			<button class="dropbtn">{{preset.name}}</button>
+			<div class="dropdown-content">
+				<button ng-repeat="item in preset.list" ng-click="load(item)">
+					{{item.name}}
 				</button>
-			</td>
+			</div>
+		</div>
 
-			<td>
-				<button ng-click="clear()">Clear</button>
-			</td>
-			<td>
-				<button ng-click="show_all = show_all ? false : true">{{show_all ? "hide" : "show"}}</button>
-			</td>
-		</tr>
-	</table>
+		<div class="dropdown ctrl">
+			<button class="dropbtn">Settings</button>
+			<div class="dropdown-content">
+				<button class="ctrl" ng-click="setting.show_all = setting.show_all ? false : true">
+					Unused elements: {{setting.show_all ? "Hide" : "Show"}}
+				</button>
+				<button class="ctrl" ng-click="setting.show_formulas = setting.show_formulas ? false : true">
+					Formulas: {{setting.show_formulas ? "Hide" : "Show"}}
+				</button>
+				<button class="ctrl" ng-click="unit_test()">
+					Run unit tests
+				</button>
+				<span>
+					Precission
+					<input style="width: 50px" type="number", ng-model="setting.precision" ng-keyup="update_property_show()">
+				</span>
+			</div>
+		</div>
 
+		<button class="ctrl" ng-click="clear()">
+			Clear
+		</button>
+	</div>
+
+	<!-- Properties -->
 	<table>
-		<thead>
+		<tbody ng-repeat="group in properties.list" ng-show="setting.show_all || group.visible()">
 			<tr>
-				<td>Name</td>
-				<td>Value</td>
-				<td>Unit</td>
+				<td colspan="2" class="group" height="40">
+					{{group.name}}
+				</td>
 			</tr>
-		</thead>
-
-		<tbody ng-repeat="group in property_groups.store" ng-if="show_all || group.visible()">
-			<tr class="group">
-				<td colspan="3">{{group.name}}</td>
-			</tr>
-			<tr ng-repeat="property in group.store" ng-if="show_all || property.visible()">
+			<tr
+				ng-repeat="property in group.list"
+				ng-if="setting.show_all || property.visible()"
+			>
 					<td>{{property.name}}</td>
 					<td>
 						<input
-							ng-model="property.show_value"
-							ng-keyup="update(property)"
-							ng-focus="property.focus()"
-							ng-blur="property.blur()"
-							type="number"/>
+							ng-model="property.show"
+							ng-keyup="property.parse() || update()"
+							ng-class="property.class"
+							ng-readonly="property.dependent"
+							/>
 					</td>
 					<td>{{property.show_unit}}</td>
 				</tr>
@@ -63,35 +82,32 @@
 		</tbody>
 	</table>
 
-	<br>
-	<br>
-
+	<!-- Formulas -->
 	<table>
-		<thead>
+		<tbody ng-repeat="group in formulas.list"  ng-if="setting.show_all || group.visible()">
 			<tr>
-				<td>Name</td>
-				<td>Target</td>
-			</tr>
-		</thead>
-
-		<tbody ng-repeat="group in formula_groups.store"  ng-if="show_all || group.visible()">
-			<tr class="group">
-				<td colspan="2">
+				<td colspan="3" class="group" height="40">
 					{{group.name}}
-					&nbsp;
-					<span mathjax-bind="group.formula"></span>
 				</td>
 			</tr>
-			<tr ng-repeat="name in group.names">
-				<td>{{name}}</td>
-				<td>
-					<input
-						type="radio"
-						ng-value="name"
-						ng-model="group.target"
-					/>
+			<tr
+				ng-repeat="formula in group.list"
+				ng-if="setting.show_all || formula.visible()"
+			>
+				<td>{{formula.name}}</td>
+				<td ng-if="setting.show_formulas"><span mathjax-bind="formula.formula"></span></td>
+				<td class="dropdown" style="width: 99%">
+					<div class="dropbtn formula">{{formula.value}}</div>
+					<div class="dropdown-content">
+						<button ng-repeat="name in formula.possible_values" ng-click="formula.set(name) || update()">
+							{{name}}
+						</button>
+					</div>
 				</td>
 			</tr>
 		</tbody>
 	</table>
+
+	<span style="white-space: pre">{{unit_test_result}}</span>
 </body>
+</html>
