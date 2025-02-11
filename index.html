@@ -22,34 +22,40 @@
 	<!-- Navigation Bar -->
 	<div class="navbar">
 		<div class="dropdown" ng-repeat="preset in presets.list">
-			<button class="dropbtn">{{preset.name}}</button>
+			<button class="dropbtn" ng-attr-txt="preset.name">{{preset.name}}</button>
 			<div class="dropdown-content">
-				<button ng-repeat="item in preset.list" ng-click="load(item)">
+				<button ng-repeat="item in preset.list" ng-click="load(item)" ng-attr-txt="item.name">
 					{{item.name}}
 				</button>
 			</div>
 		</div>
 
-		<div class="dropdown ctrl">
-			<button class="dropbtn">Settings</button>
-			<div class="dropdown-content">
-				<button class="ctrl" ng-click="setting.show_all = setting.show_all ? false : true">
-					Unused elements: {{setting.show_all ? "Hide" : "Show"}}
+		<div class="dropdown">
+			<button class="dropbtn">⛭</button>
+			<div class="dropdown-content" style="width:150px">
+				<button ng-click="setting.show_all = setting.show_all ? false : true" >
+					{{setting.show_all ? '✓' : '✗'}} &ensp; Show
 				</button>
-				<button class="ctrl" ng-click="setting.show_formulas = setting.show_formulas ? false : true">
-					Formulas: {{setting.show_formulas ? "Hide" : "Show"}}
+
+				<button ng-click="setting.show_formulas = setting.show_formulas ? false : true" >
+					{{setting.show_formulas ? '✓' : '✗'}} &ensp; Formulas
 				</button>
-				<button class="ctrl" ng-click="unit_test()">
-					Run unit tests
-				</button>
+
 				<span>
 					Precission
-					<input style="width: 50px" type="number", ng-model="setting.precision" ng-keyup="update_property_show()">
+					<input
+						style="width: 50px"
+						type="number"
+						ng-model="setting.precision"
+						ng-keyup="update_property_show()" />
 				</span>
+				<button ng-click="unit_test()">
+					Run unit tests
+				</button>
 			</div>
 		</div>
 
-		<button class="ctrl" ng-click="clear()">
+		<button ng-click="clear()" class="dropbtn">
 			Clear
 		</button>
 	</div>
@@ -69,6 +75,7 @@
 					<td>{{property.name}}</td>
 					<td>
 						<input
+							type="text"
 							ng-model="property.show"
 							ng-keyup="property.parse() || update()"
 							ng-class="property.class"
@@ -95,14 +102,15 @@
 				ng-if="setting.show_all || formula.visible()"
 			>
 				<td>{{formula.name}}</td>
-				<td ng-if="setting.show_formulas"><span mathjax-bind="formula.formula"></span></td>
-				<td class="dropdown" style="width: 99%">
-					<div class="dropbtn formula">{{formula.value}}</div>
-					<div class="dropdown-content">
-						<button ng-repeat="name in formula.possible_values" ng-click="formula.set(name) || update()">
+				<td ng-if="setting.show_formulas">
+					<span mathjax-bind="formula.formula"></span>
+				</td>
+				<td>
+					<select ng-model="formula.value">
+						<option ng-repeat="name in formula.possible_values">
 							{{name}}
-						</button>
-					</div>
+						</option>
+					</select>
 				</td>
 			</tr>
 		</tbody>

@@ -214,8 +214,9 @@ class Formulas extends Item {
 
 	calc() {
 		if (this.visible()) {
-			let result = this.functions.get(this.value)(this.properties);
-			return this.properties.get(this.value).set(result, false);
+			let value = this.value.trim()
+			let result = this.functions.get(value)(this.properties);
+			return this.properties.get(value).set(result, false);
 		} else {
 			return false;
 		}
@@ -231,8 +232,9 @@ class Formulas extends Item {
 
 	set_property_state() {
 		if (this.visible()) {
+			let value = this.value.trim();
 			this.properties.forEach(p => {
-				if (p.full_name === this.value) {
+				if (p.full_name === value) {
 					p.dependent = true;
 				} else {
 					p.required = true;
@@ -257,7 +259,8 @@ class Presets extends Item {
 		);
 		Object.entries(this.formulas).forEach(i => {
 			try {
-				formulas.map.get(i[0]).set(i[1])
+				let value = `\n\t\t\t\t\t\t\t${i[1]}\n\t\t\t\t\t\t`;
+				formulas.map.get(i[0]).set(value)
 			} catch (e) {
 				console.log(i);
 				throw e;

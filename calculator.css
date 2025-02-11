@@ -2,12 +2,13 @@
     box-sizing: border-box
 }
 
-input {
-	padding: 4px;
-	border: none;
-	text-align: right;
-	margin-left: 10px;
-	width: 100px;
+:root {
+	--inactive: #ddd;
+	--active: #ccc;
+	--required: rgb(185, 253, 182);
+	--background: white;
+	--text: black;
+	--empty: red;
 }
 
 span {
@@ -15,6 +16,21 @@ span {
 	margin-right: 10px;
 }
 
+.navbar {
+	background-color: var(--inactive);
+}
+
+select {
+	border: 0;
+	outline: 1px inset black;
+	outline-offset:-1px;
+	margin-left: 10px;
+	/* padding: none; */
+	width: calc(100% - 9px);
+  }
+
+
+/* *** Table *** */
 table {
 	border-collapse: collapse;
 	float: left;
@@ -23,61 +39,51 @@ table {
 }
 
 td {
-	/* border: 1px solid green; */
+	/* border: 1px solid red; */
 	margin: none;
-	padding: none;
+	padding-left: 4px;
 }
 
-
 td.group {
-	padding: 2px;
-	border-bottom: solid 2px grey;
+	padding: 4px;
+	border-bottom: solid 2px var(--text);
 	margin-top: 105px;
+	padding-right: 20px;
+	margin-left: 2px;
 	vertical-align: bottom;
 }
 
 
-.navbar {
-	background-color: gray;
-}
-
-
-.navbar a.load {
-	background-color: silver;
-}
-
-button {
-	background-color: silver;
-	padding: 10px;
-	font-size: 16px;
+/* *** Input *** */
+input[type=text] {
+	padding: 4px;
 	border: none;
-}
-
-input {
-	padding-right: 10px;
+	text-align: right;
+	margin: none;
+	margin-left: 10px;
+	margin-right: -1px;
+	width: 100px;
 }
 
 input.empty {
-	box-shadow:inset 0px 0px 0px 2px red;
+	box-shadow:inset 0px 0px 0px 2px var(--empty);
 }
 
 input.manual {
-	background-color: silver;
+	background-color: var(--inactive);
 }
 
 input.required {
-	background-color: #bbf;
+	background-color: var(--required);
 }
-
-
 
 input.required_dependent {
 	background: repeating-linear-gradient(
       45deg,
       transparent,
-      transparent 10px,
-      #bbf 10px,
-      #bbf 20px
+      transparent 3px,
+      var(--required) 3px,
+      var(--required) 6px
   );
 }
 
@@ -86,8 +92,33 @@ input.dependent {
 }
 
 
+/* *** Dropdown *** */
+
+
+button {
+	background-color: var(--inactive);
+	padding: 10px;
+	font-size: 16px;
+	border: none;
+	display: inline-flex;
+	align-items: center;
+	flex-direction: column;
+	text-align: left;
+	padding-left: 10px;
+	white-space: nowrap;
+	min-width: 100px;
+}
+
+/* button::after {
+	content: attr(txt);
+	font-weight: bold;
+	opacity: 0;
+	pointer-events: none;
+	height: 0px;
+} */
+
 button:hover {
-	text-decoration: underline;
+	font-weight: bold;
 }
 
 .dropdown {
@@ -98,32 +129,36 @@ button:hover {
 .dropdown-content {
 	display: none;
 	position: absolute;
-	background-color: #f1f1f1;
-	min-width: 160px;
+	background-color: var(--inactive);
+	/* min-width: 120px; */
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	z-index: 1;
 }
 
 .dropdown-content button {
-	color: black;
-	padding: 12px 16px;
+	color: var(--text);
+	/* padding: 12px 16px; */
 	text-decoration: none;
 	display: block;
 	width: 100%;
 }
 
-.ctrl {
-	background-color: gray;
-}
-
-div.formula {
-	background-color: silver;
+/* div.formula {
+	background-color: var(--inactive);
 	min-height: calc(4px + 1em);
 	padding-left: 10px;
 	padding-right: 10px;
 	width: 100%;
+} */
+
+.dropdown-content :hover {
+	font-weight: bold;
+	background-color: var(--active);
 }
 
-.dropdown-content button:hover {text-decoration: underline;}
 .dropdown:hover .dropdown-content {display: block;}
-.dropdown:hover .dropbtn {background-color: silver;}
+
+.dropdown:hover .dropbtn {
+	background-color: var(--active);
+	font-weight: bold;
+}
