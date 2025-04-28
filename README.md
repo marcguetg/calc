@@ -1,13 +1,7 @@
 # Bugs
 
-# Functionality
-
-# GUI
-
-# Properties
-Beam Dynamics.Missmatch
-
-# Functions
+-> Check with genesis simulations
+-> Add Laser parameters (railay length, farfield calc, pointing)
 
 
 https://journals.aps.org/prab/abstract/10.1103/PhysRevSTAB.10.034801

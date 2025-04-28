@@ -41,6 +41,10 @@
 					{{setting.show_formulas ? '✓' : '✗'}} &ensp; Formulas
 				</button>
 
+				<button ng-click="setting.show_colors = setting.show_colors ? false : true" >
+					{{setting.show_colors ? '✓' : '✗'}} &ensp; Colors
+				</button>
+
 				<span>
 					Precission
 					<input
@@ -59,6 +63,17 @@
 			Clear
 		</button>
 	</div>
+
+	<!-- Color help -->
+	<div ng-if="setting.show_colors">
+		<br>
+		<input type="text"readonly="true" class="empty" value="Empty"/><br>
+		<input type="text"readonly="true" class="required" value="required"/><br>
+		<input type="text"readonly="true" class="required_dependent" value="required & dependent"/><br>
+		<input type="text"readonly="true" class="dependent" value="dependent"/><br>
+		<input type="text"readonly="true" class="manual" value="manual"/><br>
+	</div>
+
 
 	<!-- Properties -->
 	<table>
@@ -116,6 +131,8 @@
 		</tbody>
 	</table>
 
-	<span style="white-space: pre">{{unit_test_result}}</span>
+	<!-- <span style="white-space: pre">{{unit_test_result}}</span> -->
+
+	<p ng-bind-html=unit_test_result></p>
 </body>
 </html>

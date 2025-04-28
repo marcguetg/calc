@@ -266,7 +266,7 @@ var PROPERTIES = [
 
 
 class Const {
-	static ElectronRestMassIneV = 0.511e6;
+	static ElectronRestMassIneV = 511e3;
 	static ElectronMass = 9.11e-31;
 	static c = 299792458;
 	static ElementaryCharge = 1.602e-19;

@@ -6,9 +6,10 @@ if(typeof console === undefined) {
 }
 
 var SETTING = {
-	precision: 2,
+	precision: 3,
 	show_formulas: false,
 	show_all: false,
+	show_colors: true,
 };
 
 
@@ -321,7 +322,7 @@ app.directive("mathjaxBind", function () {
 });
 
 
-app.controller('world', function ($scope) {
+app.controller('world', function ($scope, $sce) {
 	window.SCOPE = $scope;
 
 	$scope.properties= new SuperGroup(PROPERTIES, Property);
@@ -371,7 +372,7 @@ app.controller('world', function ($scope) {
 	$scope.unit_test = function() {
 		$scope.clear();
 		$scope.setting.show_all = false;
-		$scope.unit_test_result = unit_test($scope.formulas.map.values());
+		$scope.unit_test_result = $sce.trustAsHtml(unit_test($scope.formulas.map.values()));
 	}
 
 	$scope.load($scope.presets.map.values().next().value);
